@@ -79,6 +79,20 @@ class Conv1D(nn.Module):
         x = x.view(*size_out)
         return x
 
+def get_enable_lora(config):
+    if config.enable_lora is None:
+        return [True, False, True]
+
+    res = []
+    for c in config.enable_lora:
+        if c == 'T':
+            res.append(True)
+        elif c == 'F':
+            res.append(False)
+        else:
+            raise BaseException("Invalid parameter, enable_lora='{}'".format(config.enable_lora))
+
+    return res
 
 class Attention(nn.Module):
     def __init__(self, nx, n_ctx, config, scale=False):
@@ -97,7 +111,7 @@ class Attention(nn.Module):
             r=config.lora_attn_dim, 
             lora_alpha=config.lora_attn_alpha, 
             lora_dropout=config.lora_dropout, 
-            enable_lora=[True, False, True], 
+            enable_lora=get_enable_lora(config),
             fan_in_fan_out=True,
             merge_weights=False
         )
@@ -311,6 +325,7 @@ class GPT2Config(object):
         lora_dropout=0.0,
         lora_r_dropout=0.0,
         fix_dropout=0.0,
+        lora_enable = None
     ):
         self.vocab_size = vocab_size_or_config_json_file
         self.n_ctx = n_ctx
@@ -324,6 +339,7 @@ class GPT2Config(object):
         self.lora_attn_alpha = lora_attn_alpha
         self.lora_dropout = lora_dropout
         self.lora_r_dropout = lora_r_dropout
+        self.enable_lora = lora_enable
 
         self.fix_dropout = fix_dropout
 

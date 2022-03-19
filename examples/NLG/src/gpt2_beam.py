@@ -63,6 +63,8 @@ parser.add_argument('--lora_dim', type=int, default=0, help='lora attn dimension
 
 parser.add_argument('--lora_alpha', type=int, default=128, help='lora attn alpha')
 
+parser.add_argument('--lora_enable', type=str)
+
 parser.add_argument('--work_dir', type=str, default=os.getenv('PT_OUTPUT_DIR', 'gpt2_model'), 
                     help='working folder')
 
@@ -366,16 +368,19 @@ if __name__ == '__main__':
         config = GPT2Config(
             n_embd=768, n_layer=12, n_head=12, 
             lora_attn_dim=args.lora_dim, lora_attn_alpha=args.lora_alpha,
+            lora_enable = args.lora_enable,
         )
     elif args.model_card == 'gpt2.md':
         config = GPT2Config(
             n_embd=1024, n_layer=24, n_head=16, 
             lora_attn_dim=args.lora_dim, lora_attn_alpha=args.lora_alpha,
+            lora_enable = args.lora_enable,
         )
     elif args.model_card == 'gpt2.lg':
         config = GPT2Config(
             n_embd=1280, n_layer=36, n_head=20, 
             lora_attn_dim=args.lora_dim, lora_attn_alpha=args.lora_alpha,
+            lora_enable = args.lora_enable,
         )
 
     lm_net = GPT2LMModel(config)

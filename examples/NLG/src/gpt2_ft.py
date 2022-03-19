@@ -74,6 +74,8 @@ parser.add_argument('--lora_dim', type=int, default=0, help='lora attn dimension
 
 parser.add_argument('--lora_alpha', type=int, default=128, help='lora attn alpha')
 
+parser.add_argument('--lora_enable', type=str)
+
 parser.add_argument('--obj', default='clm', choices=['jlm', 'clm'], 
                     help='language model training objective')
 
@@ -302,6 +304,7 @@ if __name__ == '__main__':
             lora_attn_dim=args.lora_dim, 
             lora_attn_alpha=args.lora_alpha, 
             lora_dropout=args.lora_dropout,
+            lora_enable = args.lora_enable,
         )
     elif args.model_card == 'gpt2.md':
         config = GPT2Config(
@@ -309,6 +312,7 @@ if __name__ == '__main__':
             lora_attn_dim=args.lora_dim, 
             lora_attn_alpha=args.lora_alpha, 
             lora_dropout=args.lora_dropout,
+            lora_enable = args.lora_enable,
         )
     elif args.model_card == 'gpt2.lg':
         config = GPT2Config(
@@ -316,6 +320,7 @@ if __name__ == '__main__':
             lora_attn_dim=args.lora_dim, 
             lora_attn_alpha=args.lora_alpha, 
             lora_dropout=args.lora_dropout,
+            lora_enable = args.lora_enable,
         )
 
     lm_net = GPT2LMModel(config)
